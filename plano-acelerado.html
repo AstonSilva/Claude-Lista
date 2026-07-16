@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano Acelerado: De Estudante a Engenheiro de IA</title>
+<style>
+  :root{
+    --bg:#0A0F1C;
+    --panel:#111A2E;
+    --panel-2:#0D1526;
+    --line:#22304A;
+    --text:#E7ECF5;
+    --muted:#8FA0BE;
+    --f1:#3ED598; /* verde */
+    --f2:#42A7F5; /* azul */
+    --f3:#B084F0; /* roxo */
+    --f4:#F16B6B; /* vermelho */
+    --f5:#F5A24A; /* laranja */
+    --f6:#3ED598; /* verde */
+    --gold:#F0B429;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 500px at 10% -10%, rgba(66,167,245,0.08), transparent),
+      radial-gradient(1200px 500px at 90% 0%, rgba(176,132,240,0.08), transparent),
+      var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:1400px;margin:0 auto;padding:0 18px;}
+
+  /* HEADER */
+  header{
+    padding:28px 18px 18px;
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;
+    background:rgba(10,15,28,0.92);
+    backdrop-filter:blur(10px);
+    z-index:50;
+  }
+  header .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;}
+  h1{
+    font-size:22px;
+    margin:0 0 4px;
+    letter-spacing:0.5px;
+  }
+  h1 span{color:var(--f2);}
+  header p.sub{margin:0;color:var(--muted);font-size:13px;}
+  .progress-block{min-width:260px;flex:1;max-width:420px;}
+  .progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+  .progress-bar{height:10px;border-radius:6px;background:var(--panel-2);overflow:hidden;border:1px solid var(--line);}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--f1),var(--f2),var(--f3));width:0%;transition:width .4s ease;}
+  .header-actions{display:flex;gap:8px;}
+  .btn{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-size:12px;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .btn:hover{border-color:var(--f2);color:var(--f2);}
+
+  h2.page-title{
+    text-align:center;
+    font-size:28px;
+    margin:26px 0 4px;
+    letter-spacing:.5px;
+  }
+  h2.page-title .accent{color:var(--f1);}
+  p.page-sub{text-align:center;color:var(--muted);margin:0 0 26px;font-size:14px;}
+
+  /* PHASES GRID */
+  .phases{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:14px;
+    margin-bottom:30px;
+  }
+  @media(max-width:1200px){.phases{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:720px){.phases{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.phases{grid-template-columns:1fr;}}
+
+  .phase-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-top:3px solid var(--c);
+    border-radius:12px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .phase-head .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    font-size:11px;font-weight:700;color:var(--c);letter-spacing:1px;
+  }
+  .phase-icon{
+    width:26px;height:26px;border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    background:color-mix(in srgb, var(--c) 18%, transparent);
+    border:1px solid var(--c);
+    font-size:14px;
+  }
+  .phase-head h3{margin:6px 0 0;font-size:15px;color:var(--c);letter-spacing:.3px;}
+  .badge{
+    display:inline-block;margin-top:6px;
+    background:color-mix(in srgb, var(--c) 16%, transparent);
+    color:var(--c);border:1px solid var(--c);
+    font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;
+  }
+  .section-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:4px 0 2px;}
+
+  .check-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
+  .check-item{display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13.5px;line-height:1.35;padding:4px 6px;border-radius:6px;transition:.15s;}
+  .check-item:hover{background:rgba(255,255,255,0.03);}
+  .check-item input{display:none;}
+  .box{
+    width:17px;height:17px;min-width:17px;border-radius:5px;
+    border:2px solid var(--c);
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+    transition:.15s;
+    background:transparent;
+  }
+  .box svg{width:11px;height:11px;opacity:0;transform:scale(.5);transition:.15s;}
+  .check-item input:checked ~ .box{background:var(--c);}
+  .check-item input:checked ~ .box svg{opacity:1;transform:scale(1);}
+  .check-item input:checked ~ .txt{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--c);}
+  .txt{transition:.15s;}
+
+  .static-card{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-left:3px solid var(--c);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13px;
+    color:var(--text);
+  }
+  .static-card b{color:var(--c);}
+  .static-list{margin:4px 0 0;padding-left:16px;font-size:13px;color:var(--muted);}
+  .static-list li{margin-bottom:2px;}
+  .icon-row{display:flex;gap:8px;margin-top:6px;font-size:18px;opacity:.85;}
+
+  /* PROJETOS PRÁTICOS */
+  .projetos-section{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:30px;
+  }
+  .projetos-title{
+    text-align:center;font-size:16px;font-weight:700;margin:0 0 18px;
+    color:var(--text);
+  }
+  .projetos-title span{color:var(--muted);font-weight:400;font-size:13px;}
+  .chain{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    justify-content:center;
+    gap:4px;
+  }
+  .chain-item{display:flex;flex-direction:column;align-items:center;width:92px;text-align:center;}
+  .chain-num{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--panel-2);border:2px solid var(--f2);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:var(--f2);font-size:15px;
+    margin-bottom:6px;
+  }
+  .chain-item span{font-size:11.5px;color:var(--muted);line-height:1.25;}
+  .chain-arrow{align-self:center;color:var(--line);font-size:18px;margin:0 2px;padding-top:14px;}
+  .note-bar{
+    margin-top:18px;
+    text-align:center;
+    background:var(--panel-2);
+    border:1px dashed var(--f2);
+    border-radius:8px;
+    padding:10px 16px;
+    font-size:13px;
+    color:var(--text);
+  }
+  .note-bar b{color:var(--gold);}
+
+  /* BOTTOM GRID */
+  .bottom-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:16px;
+  }
+  @media(max-width:1100px){.bottom-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:700px){.bottom-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.bottom-grid{grid-template-columns:1fr;}}
+
+  .info-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .info-card h4{
+    margin:0;font-size:13px;letter-spacing:.4px;color:var(--text);
+    display:flex;align-items:center;gap:6px;
+  }
+  .info-card h4 .tag{color:var(--muted);font-weight:400;font-size:10.5px;}
+  .info-card p.small{margin:2px 0;font-size:12.5px;color:var(--muted);}
+
+  .final-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;
+  }
+  @media(max-width:800px){.final-grid{grid-template-columns:1fr;}}
+
+  .quote-box{
+    background:linear-gradient(135deg, rgba(240,180,41,0.12), rgba(240,180,41,0.02));
+    border:1px solid var(--gold);
+    border-radius:12px;
+    padding:16px 18px;
+    text-align:center;
+    margin-bottom:20px;
+  }
+  .quote-box b{color:var(--gold);font-size:15px;display:block;margin-bottom:4px;}
+  .quote-box span{color:var(--muted);font-size:13px;}
+
+  footer.final{
+    text-align:center;font-size:15px;font-weight:700;
+    letter-spacing:.5px;color:var(--text);padding-top:6px;
+  }
+  footer.final .accent{color:var(--f1);}
+
+  /* per-phase accent assignment */
+  .c-f1{--c:var(--f1);}
+  .c-f2{--c:var(--f2);}
+  .c-f3{--c:var(--f3);}
+  .c-f4{--c:var(--f4);}
+  .c-f5{--c:var(--f5);}
+  .c-f6{--c:var(--f6);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div>
+      <h1>PLANO ACELERADO: <span>DE ESTUDANTE A ENGENHEIRO DE IA</span></h1>
+      <p class="sub">Roteiro para conquistar vagas em multinacionais e criar sua própria empresa em 12 a 24 meses 🚀</p>
+    </div>
+    <div class="progress-block">
+      <div class="progress-label"><span>Progresso geral</span><span id="progress-text">0 / 0</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="reset-btn">Limpar marcações</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- FASES -->
+  <div class="phases">
+
+    <!-- FASE 1 -->
+    <div class="phase-card c-f1">
+      <div class="phase-head">
+        <div class="eyebrow"><div class="phase-icon">&lt;/&gt;</div>FASE 1</div>
+        <h3>BASE SÓLIDA</h3>
+        <span class="badge">2 MESES</span>
+      </div>
+      <div>
+        <div class="section-label">Aprenda</div>
+        <ul class="check-list" data-group="fase">
+          <li class="check-item"><input type="checkbox" data-id="f1-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Python</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f1-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Git e GitHub</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f1-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">SQL</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f1-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Estruturas de Dados</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f1-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Algoritmos</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f1-6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Programação Orientada a Objetos</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Projeto</div>
+        <div class="static-card">🗄️ Desenvolva uma API com autenticação, banco de dados e testes.</div>
+      </div>
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="phase-card c-f2">
+      <div class="phase-head">
+        <div class="eyebrow"><div class="phase-icon">☁️</div>FASE 2</div>
+        <h3>ENGENHARIA MODERNA</h3>
+        <span class="badge">2 MESES</span>
+      </div>
+      <div>
+        <div class="section-label">Aprenda</div>
+        <ul class="check-list" data-group="fase">
+          <li class="check-item"><input type="checkbox" data-id="f2-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Docker</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f2-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Linux</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f2-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">AWS (EC2, S3, RDS, IAM, Lambda)</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f2-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">CI/CD com GitHub Actions</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Projeto</div>
+        <div class="static-card">☁️ Coloque sua API em produção na AWS.</div>
+      </div>
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="phase-card c-f3">
+      <div class="phase-head">
+        <div class="eyebrow"><div class="phase-icon">✳️</div>FASE 3</div>
+        <h3>IA APLICADA</h3>
+        <span class="badge">3 MESES</span>
+      </div>
+      <div>
+        <div class="section-label">Aprenda</div>
+        <ul class="check-list" data-group="fase">
+          <li class="check-item"><input type="checkbox" data-id="f3-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">LLMs</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">OpenAI API</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">LangChain</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">LangGraph</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">RAG</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">MCP</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-7"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Redis</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-8"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">PostgreSQL</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-9"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">pgvector</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-10"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Qdrant</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Projetos</div>
+        <ul class="check-list" data-group="fase">
+          <li class="check-item"><input type="checkbox" data-id="f3-p1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Chat com documentos PDF</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-p2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Agente para WhatsApp</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-p3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">IA que consulta banco de dados</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f3-p4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Agente de atendimento</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 4 -->
+    <div class="phase-card c-f4">
+      <div class="phase-head">
+        <div class="eyebrow"><div class="phase-icon">🛡️</div>FASE 4</div>
+        <h3>SEGURANÇA</h3>
+        <span class="badge">2 MESES</span>
+      </div>
+      <div>
+        <div class="section-label">Aprenda</div>
+        <ul class="check-list" data-group="fase">
+          <li class="check-item"><input type="checkbox" data-id="f4-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">OWASP Top 10</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f4-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">JWT</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f4-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">OAuth</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f4-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Segurança de APIs</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f4-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Prompt Injection</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f4-6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Jailbreak</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f4-7"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">AI Security</span></li>
+        </ul>
+      </div>
+      <div class="static-card">🔒 Depois proteja os agentes que você criou.</div>
+    </div>
+
+    <!-- FASE 5 -->
+    <div class="phase-card c-f5">
+      <div class="phase-head">
+        <div class="eyebrow"><div class="phase-icon">⬡</div>FASE 5</div>
+        <h3>INFRAESTRUTURA AVANÇADA</h3>
+        <span class="badge">2 MESES</span>
+      </div>
+      <div>
+        <div class="section-label">Aprenda</div>
+        <ul class="check-list" data-group="fase">
+          <li class="check-item"><input type="checkbox" data-id="f5-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Kubernetes</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f5-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Terraform</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f5-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Observabilidade</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f5-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Grafana</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f5-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Prometheus</span></li>
+        </ul>
+      </div>
+      <div class="static-card">❗ Agora você consegue colocar aplicações grandes no ar com escalabilidade, segurança e monitoramento.
+        <div class="icon-row">⎈ 🌍 🔥</div>
+      </div>
+    </div>
+
+    <!-- FASE 6 -->
+    <div class="phase-card c-f6">
+      <div class="phase-head">
+        <div class="eyebrow"><div class="phase-icon">📈</div>FASE 6</div>
+        <h3>PRODUTO &amp; MERCADO</h3>
+        <span class="badge">3 MESES</span>
+      </div>
+      <div>
+        <div class="section-label">Objetivo</div>
+        <div class="static-card"><b>Criar um SaaS de verdade.</b></div>
+        <ul class="check-list" data-group="fase" style="margin-top:8px;">
+          <li class="check-item"><input type="checkbox" data-id="f6-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Não um projeto de curso.</span></li>
+          <li class="check-item"><input type="checkbox" data-id="f6-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Um produto que possa cobrar assinatura.</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Exemplos de nichos</div>
+        <ul class="static-list">
+          <li>IA para clínicas</li>
+          <li>IA para escritórios</li>
+          <li>IA para imobiliárias</li>
+          <li>IA para pequenas empresas</li>
+        </ul>
+      </div>
+      <div class="static-card">👥 <b>Coloque clientes usando.</b> Mesmo que sejam apenas 5 clientes.</div>
+    </div>
+
+  </div>
+
+  <!-- PROJETOS PRÁTICOS -->
+  <div class="projetos-section">
+    <div class="projetos-title">PROJETOS PRÁTICOS <span>(Construa e evolua um único produto do início ao fim)</span></div>
+    <div class="chain" id="chain">
+      <div class="chain-item"><div class="chain-num">1</div><span>API em Python</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">2</div><span>Banco PostgreSQL</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">3</div><span>Docker</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">4</div><span>AWS (Infraestrutura)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">5</div><span>RAG (documentos)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">6</div><span>LangGraph (Agentes)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">7</div><span>MCP (Conexões)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">8</div><span>Kubernetes (Deploy)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">9</div><span>Segurança (Aplicação + IA)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">10</div><span>Dashboard (Admin)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">11</div><span>Pagamentos (Assinaturas)</span></div>
+      <div class="chain-arrow">→</div>
+      <div class="chain-item"><div class="chain-num">12</div><span>Clientes Reais</span></div>
+    </div>
+    <div class="note-bar">⭐ No fim de 12 meses, você terá <b>um produto completo</b> que demonstra todas as habilidades que empresas e investidores procuram.</div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <div class="info-card c-f2">
+      <h4>🌐 INGLÊS <span class="tag">(INDISPENSÁVEL)</span></h4>
+      <p class="small">Todos os dias:</p>
+      <ul class="check-list" data-group="fase">
+        <li class="check-item"><input type="checkbox" data-id="ing-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">30 min leitura</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ing-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">30 min vídeos</span></li>
+        <li class="check-item"><input type="checkbox" data-id="ing-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">30 min falando</span></li>
+      </ul>
+      <p class="small">Em 1 ano isso muda completamente sua carreira.</p>
+      <div class="static-card">Inglês abre portas para conteúdos avançados e networking global.</div>
+    </div>
+
+    <div class="info-card c-f1">
+      <h4>🐙 GITHUB <span class="tag">(PORTFÓLIO)</span></h4>
+      <p class="small">Transforme seu GitHub em um portfólio.</p>
+      <p class="small">Tenha pelo menos:</p>
+      <ul class="static-list">
+        <li>API REST</li><li>Microsserviços</li><li>Docker</li><li>Kubernetes</li>
+        <li>AWS</li><li>LangGraph</li><li>MCP</li><li>RAG</li>
+        <li>Banco vetorial</li><li>Agente de IA</li><li>SaaS completo</li>
+      </ul>
+      <div class="static-card">Isso ajuda recrutadores a te encontrarem.</div>
+    </div>
+
+    <div class="info-card c-f2">
+      <h4>💼 LINKEDIN <span class="tag">(POSICIONAMENTO)</span></h4>
+      <p class="small">Publique semanalmente:</p>
+      <ul class="static-list">
+        <li>💬 "Hoje implementei…"</li>
+        <li>💡 "Aprendi…"</li>
+        <li>📌 "Projeto novo…"</li>
+      </ul>
+      <p class="small">Isso ajuda recrutadores a te encontrarem.</p>
+      <div class="static-card">Compartilhar o progresso te posiciona como alguém em constante evolução.</div>
+    </div>
+
+    <div class="info-card c-f5">
+      <h4>🕐 ROTINA DIÁRIA <span class="tag">(SUGESTÃO)</span></h4>
+      <p class="small">3 a 4 horas por dia (de segunda a sábado)</p>
+      <ul class="check-list" data-group="fase">
+        <li class="check-item"><input type="checkbox" data-id="rot-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">1h Estudo</span></li>
+        <li class="check-item"><input type="checkbox" data-id="rot-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">1h Projeto</span></li>
+        <li class="check-item"><input type="checkbox" data-id="rot-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">1h Prática / Laboratório</span></li>
+        <li class="check-item"><input type="checkbox" data-id="rot-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">30min Inglês</span></li>
+        <li class="check-item"><input type="checkbox" data-id="rot-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">30min Leitura técnica</span></li>
+      </ul>
+      <div class="static-card">Consistência é mais importante que motivação. Pequenas ações todo dia criam resultados enormes.</div>
+    </div>
+
+    <div class="info-card c-f1">
+      <h4>🗓️ TIMELINE RESUMIDO</h4>
+      <ul class="check-list" data-group="fase">
+        <li class="check-item"><input type="checkbox" data-id="tl-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt"><b>0 – 12 MESES</b><br>Ter portfólio forte e conseguir estágio ou vaga remota em empresa de IA ou multinacional.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="tl-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt"><b>12 – 18 MESES</b><br>Ganhar experiência profissional e lançar um SaaS próprio.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="tl-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt"><b>18 – 24 MESES</b><br>Ter duas opções reais:</span></li>
+      </ul>
+      <ul class="static-list">
+        <li>Aceitar vaga muito bem remunerada em multinacional</li>
+        <li>Continuar desenvolvendo um negócio próprio com clientes</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- FINAL GRID -->
+  <div class="final-grid">
+
+    <div class="info-card c-f1">
+      <h4>📝 ANOTAÇÕES IMPORTANTES</h4>
+      <ul class="check-list" data-group="fase">
+        <li class="check-item"><input type="checkbox" data-id="not-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Não tente aprender tudo ao mesmo tempo. Construa um projeto grande desde o início e vá adicionando tecnologias conforme a necessidade.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="not-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Foque em resolver problemas reais. Isso te diferencia de quem só faz projetos de curso.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="not-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Documente tudo o que você aprende e compartilha. Ensinar é a melhor forma de aprender.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="not-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Networking importa. Participe de comunidades, eventos, hackathons e grupos de tecnologia.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="not-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Busque mentores. Encontre pessoas que já estão onde você quer chegar.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="not-6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Falhe rápido, aprenda rápido e melhore rápido. Esse é o caminho do empreendedor.</span></li>
+      </ul>
+      <div class="static-card">HABILIDADES TÉCNICAS TE COLOCAM NA PORTA, MAS HABILIDADES DE NEGÓCIO TE LEVAM AO TOPO.</div>
+    </div>
+
+    <div class="info-card c-f5">
+      <h4>🎯 POR QUE ESSE CAMINHO?</h4>
+      <ul class="check-list" data-group="fase">
+        <li class="check-item"><input type="checkbox" data-id="por-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">IA está transformando todas as indústrias.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="por-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Cibersegurança é essencial para proteger sistemas e dados.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="por-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">A combinação de IA + Segurança + Cloud é rara e muito valorizada.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="por-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">SaaS e automação permitem escalar e gerar renda recorrente.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="por-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Empresas do mundo todo contratam remotamente.</span></li>
+        <li class="check-item"><input type="checkbox" data-id="por-6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg></span><span class="txt">Você terá liberdade para trabalhar de onde quiser, inclusive de Itararé-SP.</span></li>
+      </ul>
+      <div class="quote-box">
+        <b>🏆 DISCIPLINA HOJE = LIBERDADE AMANHÃ</b>
+        <span>Seu futuro começa nas escolhas que você faz agora.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="final">🎯 FOCO + CONSISTÊNCIA + EXECUÇÃO = <span class="accent">RESULTADOS EXTRAORDINÁRIOS</span> 🚀</footer>
+
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = "plano-acelerado-checklist-v1";
+  var memoryStore = {};
+  var storageAvailable = true;
+  try{
+    var t = "__test__";
+    window.localStorage.setItem(t,"1");
+    window.localStorage.removeItem(t);
+  }catch(e){ storageAvailable = false; }
+
+  function loadState(){
+    if(storageAvailable){
+      try{
+        var raw = window.localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      }catch(e){ return {}; }
+    }
+    return memoryStore;
+  }
+  function saveState(state){
+    if(storageAvailable){
+      try{ window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+    } else {
+      memoryStore = state;
+    }
+  }
+
+  var state = loadState();
+  var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.check-item input[type="checkbox"]'));
+
+  function applyState(){
+    checkboxes.forEach(function(cb){
+      var id = cb.getAttribute('data-id');
+      cb.checked = !!state[id];
+    });
+    updateProgress();
+  }
+
+  function updateProgress(){
+    var total = checkboxes.length;
+    var done = checkboxes.filter(function(cb){ return cb.checked; }).length;
+    var pct = total ? Math.round((done/total)*100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = done + ' / ' + total + ' (' + pct + '%)';
+  }
+
+  checkboxes.forEach(function(cb){
+    cb.addEventListener('change', function(){
+      var id = cb.getAttribute('data-id');
+      state[id] = cb.checked;
+      saveState(state);
+      updateProgress();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function(){
+    if(!confirm('Tem certeza que deseja limpar todas as marcações?')) return;
+    state = {};
+    saveState(state);
+    applyState();
+  });
+
+  applyState();
+})();
+</script>
+
+</body>
+</html>
